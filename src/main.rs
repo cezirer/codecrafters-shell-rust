@@ -3,10 +3,12 @@ use std::io::{self, Write};
 
 fn main() {
     // TODO: Uncomment the code below to pass the first stage
-    print!("$ ");
-    io::stdout().flush().unwrap();
-    let mut input = String::new();
-    io::stdin().read_line(&mut input).unwrap();
-    print!("{}: command not found", input.trim());
-    io::stdout().flush().unwrap();
+    while true {
+        print!("$ ");
+        io::stdout().flush().unwrap();
+        let mut input = String::new();
+        io::stdin().read_line(&mut input).unwrap();
+        print!("{}: command not found", input.trim());
+        io::stdout().flush().unwrap();
+    }
 }
