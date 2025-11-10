@@ -11,7 +11,7 @@ fn main() {
         io::stdin().read_line(&mut o_input).unwrap();
         let o_input = o_input.splitn(2, " ").collect::<Vec<&str>>();
         let cmd = o_input[0];
-        let param = o_input[1];
+        let param = *o_input.get(1).unwrap_or(&&"");
         match cmd {
             "exit" => exit(0),
             "echo" => {
