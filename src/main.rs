@@ -7,13 +7,19 @@ fn main() {
     loop {
         print!("$ ");
         io::stdout().flush().unwrap();
-        let mut input = String::new();
-        io::stdin().read_line(&mut input).unwrap();
-        let input = input.split(" ").collect::<Vec<&str>>()[0];
-        match input {
+        let mut o_input = String::new();
+        io::stdin().read_line(&mut o_input).unwrap();
+        let o_input = o_input.splitn(1, " ").collect::<Vec<&str>>();
+        let cmd = o_input[0];
+        let param = o_input[1];
+        match cmd {
             "exit" => exit(0),
+            "echo" => {
+                print!("{}", param);
+                io::stdout().flush().unwrap();
+            }
             _ => {
-                print!("{}: command not found\n", input.trim());
+                print!("{}: command not found\n", cmd.trim());
                 io::stdout().flush().unwrap();
             }
         }
