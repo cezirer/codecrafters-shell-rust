@@ -40,7 +40,9 @@ fn main() {
             Some("echo") => println!("{}", iter.collect::<Vec<&str>>().join(" ")),
             Some("type") => {
                 if let Some(args) = iter.next() {
-                    if let Some(args_path) = find_command_in_path(args) {
+                    if _built_in_commands.contains(&args) {
+                        println!("{args} is a shell builtin");
+                    } else if let Some(args_path) = find_command_in_path(args) {
                         println!("{args} is {args_path}");
                     } else {
                         println!("{args}: not found");
