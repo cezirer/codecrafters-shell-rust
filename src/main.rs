@@ -8,6 +8,7 @@ fn find_command_in_path(command_name: &str) -> Option<String> {
         for path in env::split_paths(&path_var) {
             let full_path = path.join(command_name);
             if full_path.exists() && full_path.is_file() {
+                // 考虑文件权限
                 if let Ok(metadata) = fs::metadata(&full_path) {
                     let permissions = metadata.permissions();
                     if permissions.mode() & 0o111 != 0 {
