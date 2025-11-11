@@ -1,7 +1,20 @@
+use std::env;
 #[allow(unused_imports)]
 use std::io::{self, Write};
-use std::process::exit;
+use std::path::Path;
 
+fn find_command_in_path(command_name: &str) -> Option<String> {
+    // 获取环境变量PATH
+    if let Ok(path_var) = env::var("PATH") {
+        for path in env::split_paths(&path_var) {
+            let full_path = path.join(command_name);
+            if full_path.exists() && full_path.is_file() {
+                return Some(full_path.to_string_lossy().into_owned());
+            }
+        }
+    }
+    None
+}
 fn main() {
     // TODO: Uncomment the code below to pass the first stage
     let _built_in_commands = vec!["echo", "type", "exit"];
@@ -22,8 +35,8 @@ fn main() {
             Some("echo") => println!("{}", iter.collect::<Vec<&str>>().join(" ")),
             Some("type") => {
                 if let Some(args) = iter.next() {
-                    if _built_in_commands.contains(&args) {
-                        println!("{args} is a shell builtin");
+                    if let Some(args_path) = find_command_in_path(args) {
+                        println!("{args} is {args_path}");
                     } else {
                         println!("{args}: not found");
                     }
