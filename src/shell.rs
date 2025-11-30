@@ -62,7 +62,12 @@ impl Shell {
         if let Some(path) = self.find_external(command) {
             let mut args_all = vec![command.name.clone()];
             args_all.extend(command.args.clone().into_iter());
-            StdCommand::new(path).args(args_all);
+            let output = StdCommand::new(path).args(args_all).output().expect("Fail");
+            if output.status.success() {
+                println!("success");
+            }
+        } else {
+            println!("not found");
         }
     }
     fn find_external(&self, command: &Command) -> Option<String> {
