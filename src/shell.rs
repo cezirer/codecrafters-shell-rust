@@ -1,8 +1,8 @@
+use crate::builtins::find_path;
 use crate::builtins::Builtins;
 use crate::command::Command;
 use std::io::{self, Write};
 use std::process::{Command as StdCommand, ExitStatus};
-
 pub struct Shell {
     builtins: Builtins,
 }
@@ -47,8 +47,7 @@ impl Shell {
         if self.builtins.contains(&command.name) {
             self.execute_builtin(&command);
         } else {
-            println!("{} not found", command.name);
-            // self.execute_external(&command);
+            self.execute_external(&command);
         }
     }
     fn execute_builtin(&self, command: &Command) {
@@ -60,6 +59,13 @@ impl Shell {
         }
     }
     fn execute_external(&self, command: &Command) {
-        println!("todo");
+        if let Some(path) = self.find_external(command) {
+            let mut args_all = vec![command.name.clone()];
+            args_all.extend(command.args.clone().into_iter());
+            StdCommand::new(path).args(args_all);
+        }
+    }
+    fn find_external(&self, command: &Command) -> Option<String> {
+        find_path::find_command_in_path(&command.name)
     }
 }

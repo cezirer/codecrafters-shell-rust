@@ -36,7 +36,7 @@ impl Builtins {
         if self.commands.contains_key(cmd) {
             println!("{cmd} is a shell builtin");
             return self.commands.get(cmd).copied();
-        } else if let Some(command_path) = Builtins::find_command_in_path(cmd) {
+        } else if let Some(command_path) = Self::find_command_in_path(cmd) {
             println!("{cmd} is {command_path}");
             return None;
         } else {
