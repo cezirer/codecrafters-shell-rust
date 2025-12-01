@@ -2,6 +2,7 @@ use crate::builtins::find_path;
 use crate::builtins::Builtins;
 use crate::command::Command;
 use std::io::{self, Write};
+use std::path::Path;
 use std::process::{Command as StdCommand, ExitStatus};
 pub struct Shell {
     builtins: Builtins,
@@ -32,7 +33,7 @@ impl Shell {
         let mut input = String::new();
         match io::stdin().read_line(&mut input) {
             Ok(0) => {
-                println!();
+                // println!();
                 std::process::exit(0)
             }
             Ok(_) => Some(input),
@@ -60,14 +61,22 @@ impl Shell {
     }
     fn execute_external(&self, command: &Command) {
         if let Some(path) = self.find_external(command) {
-            let mut args_all = vec![command.name.clone()];
+            let mut args_all = vec![];
             args_all.extend(command.args.clone().into_iter());
-            let output = StdCommand::new(path).args(args_all).output().expect("Fail");
-            if output.status.success() {
-                println!("success");
+            if let Some(parent_dir) = Path::new(&path).parent() {
+                let file_name = Path::new(&path).file_name().unwrap();
+                let output = StdCommand::new(file_name)
+                    .current_dir(parent_dir)
+                    .args(args_all)
+                    .output()
+                    .expect("Fail");
+                if output.status.success() {
+                    let stdout = str::from_utf8(&output.stdout).unwrap();
+                    print!("{}", stdout);
+                }
             }
         } else {
-            println!("not found");
+            println!("{}: not found", command.name);
         }
     }
     fn find_external(&self, command: &Command) -> Option<String> {
