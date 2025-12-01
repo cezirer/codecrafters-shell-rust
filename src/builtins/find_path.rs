@@ -1,4 +1,3 @@
-use crate::builtins::Builtins;
 use std::env;
 use std::fs;
 use std::os::unix::fs::PermissionsExt;
@@ -20,15 +19,3 @@ pub fn find_command_in_path(command_name: &str) -> Option<String> {
     }
     None
 }
-// pub fn check_commands(b: Builtins, cmd: &str) -> Option<BuiltinFn> {
-//     if b.commands.contains_key(cmd) {
-//         println!("{cmd} is a shell builtin");
-//         return b.commands.get(cmd).copied();
-//     } else if let Some(command_path) = find_command_in_path(cmd) {
-//         println!("{cmd} is {command_path}");
-//         return None;
-//     } else {
-//         println!("{cmd}: command not found");
-//         return None;
-//     }
-// }

@@ -3,7 +3,7 @@ use crate::builtins::Builtins;
 use crate::command::Command;
 use std::io::{self, Write};
 use std::path::Path;
-use std::process::{Command as StdCommand, ExitStatus};
+use std::process::Command as StdCommand;
 pub struct Shell {
     builtins: Builtins,
 }
