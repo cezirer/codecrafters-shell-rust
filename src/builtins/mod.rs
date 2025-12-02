@@ -5,6 +5,7 @@ pub mod find_path;
 pub mod type_shell;
 use std::{collections::HashMap, process::ExitStatus};
 pub type BuiltinFn = fn(&[String]) -> Result<ExitStatus, String>;
+pub mod cd;
 pub mod pwd;
 pub struct Builtins {
     pub commands: HashMap<String, BuiltinFn>,
@@ -19,6 +20,7 @@ impl Builtins {
         commands.insert("exit".to_string(), exit::execute as BuiltinFn);
         commands.insert("type".to_string(), type_shell::execute as BuiltinFn);
         commands.insert("pwd".to_string(), pwd::execute as BuiltinFn);
+        commands.insert("cd".to_string(), cd::execute as BuiltinFn);
 
         Builtins { commands }
     }
