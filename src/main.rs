@@ -6,6 +6,7 @@ use crate::shell::Shell;
 mod builtins;
 mod command;
 mod shell;
+mod test;
 fn main() {
     let mut shell = Shell::new();
     shell.run();
