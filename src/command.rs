@@ -22,13 +22,24 @@ impl Command {
         }
     }
     pub fn tokenize_input(input: &str) -> Vec<String> {
+        let input = input.trim();
+        let mut tokens: Vec<String> = Vec::new();
         let mut tokens: Vec<String> = Vec::new();
         let mut is_single_quoted = false;
         let mut is_double_quoted = false;
         let mut is_word = false;
         let mut token = String::new();
-        for c in input.chars() {
+        let mut input_char_iter = input.chars();
+        while let Some(c) = input_char_iter.next() {
             match c {
+                '\\' => {
+                    if is_single_quoted || is_double_quoted {
+                        token.push(c);
+                    } else {
+                        let next_c = input_char_iter.next().unwrap();
+                        token.push(next_c);
+                    }
+                }
                 '\'' => {
                     if is_double_quoted {
                         token.push(c);
@@ -45,7 +56,7 @@ impl Command {
                         is_double_quoted = false;
                     }
                 }
-                ' ' | '\n' => {
+                ' ' => {
                     if is_single_quoted || is_double_quoted {
                         token.push(c);
                     } else if is_word {

@@ -11,3 +11,4 @@ fn main() {
     let mut shell = Shell::new();
     shell.run();
 }
+// echo "/tmp/owl/f\n96" "/tmp/owl/f\35" "/tmp/owl/f'\'94"
